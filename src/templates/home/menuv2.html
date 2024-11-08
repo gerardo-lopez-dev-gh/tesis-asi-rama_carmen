@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Menú Principal</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='home/menu.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    </head>
+
+    <body>
+        <!-- Botón para desplegar el menú en móviles -->
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+        <script>
+            function toggleMenu() {
+                document.querySelector('.sidebar').classList.toggle('active');
+            }
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+         document.addEventListener('DOMContentLoaded', function() {
+            var menuItems = document.querySelectorAll('.sidebar ul li');
+
+            menuItems.forEach(function(item) {
+                item.addEventListener('click', function(event) {
+                    var submenu = this.querySelector('.submenu');
+                    if (submenu) {
+                        submenu.classList.toggle('show');
+                        // Cerrar otros submenús abiertos
+                        menuItems.forEach(function(otherItem) {
+                            if (otherItem !== item) {
+                                var otherSubmenu = otherItem.querySelector('.submenu');
+                                if (otherSubmenu) {
+                                    otherSubmenu.classList.remove('show');
+                                }
+                            }
+                        });
+                    }
+                    event.stopPropagation(); // Evitar que el clic se propague al padre
+                });
+            });
+        });
+    </script>
+
+    <header>
+        <h1>Menú Principal</h1>
+        <button class="log-out" onclick="window.location.href='{{ url_for('auth_blueprint.logout') }}'">
+            <i class="fas fa-sign-out"></i> Salir
+        </button>
+    </header>
+        <main>
+            <aside class="sidebar">
+                <ul>
+                    <li>
+                        <a href="#">Animal</a>
+                        <ul class="submenu">
+                            <li><a href="/animal/new">Registrar Animal</a></li>
+                            <li><a href="/animal/edit">Editar Animal</a></li>
+                            <li>
+                                <a href="#">Listar Animal</a>
+                                <ul class="submenu">
+                                    <li><a href="/animal/list">Todos</a></li>
+                                    <li><a href="/animal/view">Listar por</a></li>
+                                </ul>
+                            </li>
+                            <!--<li><a href="/animal/delete">Eliminar Animal</a></li>-->
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">Alimentación</a>
+                        <ul class="submenu">
+                            <li><a href="/alimentacion/new">Registrar Alimentación</a></li>
+                            <li><a href="/alimentacion/edit">Editar Alimentación</a></li>
+                            <li>
+                                <a href="#">Listar Alimentación</a>
+                                <ul class="submenu">
+                                    <li><a href="/alimentacion/list">Todas</a></li>
+                                    <li><a href="/alimentacion/view">Listar por</a></li>
+                                </ul>
+                            </li>
+                            <!--<li><a href="/alimentacion/delete">Eliminar Alimentación</a></li>-->
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">Dietas</a>
+                        <ul class="submenu">
+                            <li><a href="/dietas/new">Registrar Dieta</a></li>
+                            <li><a href="/dietas/edit">Editar Dieta</a></li>
+                            <li>
+                                <a href="#">Listar Dieta</a>
+                                <ul class="submenu">
+                                    <li><a href="/dietas/list">Todas</a></li>
+                                    <li><a href="/dietas/view">Listar por</a></li>
+                                </ul>
+                            </li>
+                            <!--<li><a href="/dietas/delete">Eliminar Dieta</a></li>-->
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">Historial Médico</a>
+                        <ul class="submenu">
+                            <li><a href="/historialmedico/new">Registrar Historial Médico</a></li>
+                            <li><a href="/historialmedico/edit">Editar Historial Médico</a></li>
+                            <li>
+                                <a href="#">Listar Historial Médico</a>
+                                <ul class="submenu">
+                                    <li><a href="/historialmedico/list">Todos</a></li>
+                                    <li><a href="/historialmedico/view">Listar por</a></li>
+                                </ul>
+                            </li>
+                            <!--<li><a href="/historialmedico/delete">Eliminar Historial Médico</a></li>-->
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">Materias Primas</a>
+                        <ul class="submenu">
+                            <li><a href="/materiasprimas/new">Registrar Materia Prima</a></li>
+                            <li><a href="/materiasprimas/edit">Editar Materia Prima</a></li>
+                            <li>
+                                <a href="#">Listar Materia Prima</a>
+                                <ul class="submenu">
+                                    <li><a href="/materiasprimas/list">Todos</a></li>
+                                    <li><a href="/materiasprimas/view">Listar por</a></li>
+                                </ul>
+                            </li>
+                            <!--<li><a href="/materiasprimas/delete">Eliminar Materia Prima</a></li>-->
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">Medidas Preventivas</a>
+                        <ul class="submenu">
+                            <li><a href="/medidaspreventivas/new">Registrar Medida Preventiva</a></li>
+                            <li><a href="/medidaspreventivas/edit">Editar Medida Preventiva</a></li>
+                            <li>
+                                <a href="#">Listar Medida Preventiva</a>
+                                <ul class="submenu">
+                                    <li><a href="/medidaspreventivas/list">Todos</a></li>
+                                    <li><a href="/medidaspreventivas/view">Listar por</a></li>
+                                </ul>
+                            </li>
+                            <!--<li><a href="/medidaspreventivas/delete">Eliminar Medida Preventiva</a></li>-->
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">Monedas</a>
+                        <ul class="submenu">
+                            <li><a href="/monedas/new">Registrar Moneda</a></li>
+                            <li><a href="/monedas/edit">Editar Moneda</a></li>
+                            <li>
+                                <a href="#">Listar Moneda</a>
+                                <ul class="submenu">
+                                    <li><a href="/monedas/list">Todos</a></li>
+                                    <li><a href="/monedas/view">Listar por</a></li>
+                                </ul>
+                            </li>
+                            <!--<li><a href="/monedas/delete">Eliminar Moneda</a></li>-->
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">Personas</a>
+                        <ul class="submenu">
+                            <li><a href="/general/new">Registrar Persona</a></li>
+                            <li><a href="/general/edit">Editar Persona</a></li>
+                            <li>
+                                <a href="#">Listar Persona</a>
+                                <ul class="submenu">
+                                    <li><a href="/general/list">Todos</a></li>
+                                    <li><a href="/general/view">Listar por</a></li>
+                                </ul>
+                            </li>
+                            <!--<li><a href="/general/delete">Eliminar Persona</a></li>-->
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">Roles</a>
+                        <ul class="submenu">
+                            <li><a href="/roles/new">Registrar Rol</a></li>
+                            <li><a href="/roles/edit">Editar Rol</a></li>
+                            <li>
+                                <a href="#">Listar Rol</a>
+                                <ul class="submenu">
+                                    <li><a href="/roles/list">Todos</a></li>
+                                    <li><a href="/roles/view">Listar por</a></li>
+                                </ul>
+                            </li>
+                            <!--<li><a href="/roles/delete">Eliminar Rol</a></li>-->
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">Tratamientos</a>
+                        <ul class="submenu">
+                            <li><a href="/tratamientos/new">Registrar Tratamiento</a></li>
+                            <li><a href="/tratamientos/edit">Editar Tratamiento</a></li>
+                            <li>
+                                <a href="#">Listar Tratamiento</a>
+                                <ul class="submenu">
+                                    <li><a href="/tratamientos/list">Todos</a></li>
+                                    <li><a href="/tratamientos/view">Listar por</a></li>
+                                </ul>
+                            </li>
+                            <!--<li><a href="/tratamientos/delete">Eliminar Tratamiento</a></li>-->
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">Tratamientos Aplicados</a>
+                        <ul class="submenu">
+                            <li><a href="/tratamientosaplicados/new">Registrar Tratamiento Aplicado</a></li>
+                            <li><a href="/tratamientosaplicados/edit">Editar Tratamiento Aplicado</a></li>
+                            <li>
+                                <a href="#">Listar Tratamiento Aplicado</a>
+                                <ul class="submenu">
+                                    <li><a href="/tratamientosaplicados/list">Todos</a></li>
+                                    <li><a href="/tratamientosaplicados/view">Listar por</a></li>
+                                </ul>
+                            </li>
+                            <!--<li><a href="/tratamientosaplicados/delete">Eliminar Tratamiento Aplicado</a></li>-->
+                        </ul>
+                    </li>
+
+                    <!--<li>
+                        <a href="#">Administración</a>
+                        <ul class="submenu">
+                            <li>
+                                <a href="#">Administración de Usuario</a>
+                                <ul class="submenu">
+                                    <li><a href="/user/new">Registrar Usuario</a></li>
+                                    <li><a href="/user/edit">Editar Usuario</a></li>
+                                    <li>
+                                        <a href="#">Listar Usuario</a>
+                                        <ul class="submenu">
+                                            <li><a href="/user/list">Todos</a></li>
+                                            <li><a href="/user/view">Listar por</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-<li><a href="/user/delete">Eliminar Usuario</a></li>->
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#">Administración del Sistema</a>
+                                <ul class="submenu">
+                                    <li><a href="/config/system">Configuraciones Generales del Sistema</a></li>
+                                    <li><a href="/config/animal">Configuraciones sobre los Animales</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>-->
+                </ul>
+            </aside>
+            <section class="content">
+                <!-- Mostrar mensajes -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <script>
+                            {% for category, message in messages %}
+                                Swal.fire({
+                                    icon: "{{ 'success' if category == 'success' else 'error' }}",
+                                    title: "{{ message }}",
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                });
+                            {% endfor %}
+                        </script>
+                    {% endif %}
+                {% endwith %}
+
+                <h2>Bienvenido</h2>
+                <p>Selecciona una opción del menú para continuar.</p>
+            </section>
+        </main>
+    </body>
+</html>

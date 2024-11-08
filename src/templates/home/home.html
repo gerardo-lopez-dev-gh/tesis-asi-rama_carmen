@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block menu %}
+    <nav>
+        <ul>
+            {# <li><a href="{{ url_for('index_blueprint.index') }}">Home</a></li> #}
+            <!--
+            <li><a href="{{ url_for('index_blueprint.about') }}">About</a></li>
+            <li><a href="{{ url_for('index_blueprint.contact') }}">Contact</a></li>
+            -->
+            <li><a href="{{ url_for('auth_blueprint.login') }}">Login</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <h2>Welcome to the Ganasys System</h2>
+    <!--<p>This is a RESTful API built with Flask.</p>-->
+{% endblock %}

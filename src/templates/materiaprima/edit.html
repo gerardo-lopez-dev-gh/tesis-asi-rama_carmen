@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Editar Materia Prima</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='global/edit.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    </head>
+
+    <body>
+        <header>
+            <h1>Editar Materia Prima</h1>
+            <button class="home-icon" onclick="window.location.href='{{ url_for('index_blueprint.menu') }}'">
+                <i class="fas fa-arrow-right"></i> Menu
+            </button>
+        </header>
+
+        <!-- Bloque para mostrar mensajes flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <script>
+                    {% for category, message in messages %}
+                        Swal.fire({
+                            icon: "{{ 'success' if category == 'success' else 'error' }}",
+                            title: "{{ message }}",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    {% endfor %}
+                </script>
+            {% endif %}
+        {% endwith %}
+
+        {% if not materias %}
+            <!-- Formulario para obtener el ID de la dieta -->
+            <form action="{{ url_for('materiaprima_blueprint.edit_materia_prima_form') }}" method="post">
+                <label for="id_mat_pri">ID de la Materia Prima:</label>
+                <input type="number" id="id_mat_pri" name="id_mat_pri" required><br><br>
+                <button type="submit">Cargar Materia Prima</button>
+            </form>
+        {% else %}
+            <!-- Formulario para editar la dieta cargada -->
+            <form action="{{ url_for('materiaprima_blueprint.update_materia_prima', id_mat_pri=materias.id_prima) }}" method="post">
+                <input type="hidden" name="id_mat_pri" value="{{ materias.id_prima }}">
+
+                <label for="id_animal">ID del Animal:</label>
+                <input type="number" id="id_animal" name="id_animal" value="{{ materias.id_animal }}" required><br><br>
+
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" required>{{ materias.descripcion }}</textarea><br><br>
+
+                <label for="fecha_obtencion">Fecha de Obtención:</label>
+                <input type="date" id="fecha_obtencion" name="fecha_obtencion" value="{{ materias.fecha_obtencion }}" required><br><br>
+
+                <label for="cantidad">Cantidad:</label>
+                <input type="number" id="cantidad" name="cantidad" value="{{ materias.cantidad }}" required><br><br>
+
+                <button type="submit">Actualizar</button>
+                <a href="{{ url_for('index_blueprint.menu') }}">Cancelar</a>
+            </form>
+        {% endif %}
+    </body>
+</html>

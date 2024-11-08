@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Nueva Persona</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='global/new.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+        <script>
+            function toggleUserPanel() {
+                const panel = document.getElementById('user-panel');
+                const siRadio = document.querySelector('input[name="radio-group"][value="1"]');
+                panel.style.display = siRadio.checked ? 'block' : 'none';
+            }
+
+            window.onload = function() {
+                toggleUserPanel();
+                document.querySelectorAll('input[name="radio-group"]').forEach(radio => {
+                    radio.addEventListener('change', toggleUserPanel);
+                });
+            };
+        </script>
+    </head>
+
+    <body>
+        <header>
+            <h1>Nueva Persona</h1>
+            <button class="home-icon" onclick="window.location.href='{{ url_for('index_blueprint.menu') }}'">
+                <i class="fas fa-arrow-right"></i> Menu
+            </button>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <script>
+                    {% for category, message in messages %}
+                        Swal.fire({
+                            icon: "{{ 'success' if category == 'success' else 'error' }}",
+                            title: "{{ message }}",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    {% endfor %}
+                </script>
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('general_blueprint.new_person_form') }}" method="post">
+            <label for="nombre">Apellido, Nombre:</label>
+            <input type="text" id="nombre" name="nombre" value="{{ nombre or '' }}" required><br><br>
+
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" name="direccion" value="{{ direccion or '' }}" required><br><br>
+
+            <label for="telefono">Teléfono:</label>
+            <input type="text" id="telefono" name="telefono" value="{{ telefono or '' }}" required><br><br>
+
+            <label for="correo_electronico">Correo Electrónico:</label>
+            <input type="email" id="correo_electronico" name="correo_electronico" value="{{ correo_electronico or '' }}" required><br><br>
+
+            <label for="estado_civil">Estado Civil:</label>
+            <select id="estado_civil" name="codigo_tabla_estado_civil" required>
+                <option value="" disabled {% if not codigo_tabla_estado_civil %}selected{% endif %}>Seleccione una opción</option>
+                {% for estado in estado_civil %}
+                    <option value="{{ estado.id_valor }}" {% if estado.id_valor == codigo_tabla_estado_civil %}selected{% endif %}>
+                        {{ estado.descripcion }}
+                    </option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="documento">Documento:</label>
+            <input type="text" id="documento" name="documento" value="{{ documento or '' }}" required><br><br>
+
+            <label for="tipo_documento">Tipo de Documento:</label>
+            <select id="tipo_documento" name="codigo_tabla_tipo_documento" required>
+                <option value="" disabled {% if not codigo_tabla_tipo_documento %}selected{% endif %}>Seleccione una opción</option>
+                {% for tipo in tipo_documento %}
+                    <option value="{{ tipo.id_valor }}" {% if tipo.id_valor == codigo_tabla_tipo_documento %}selected{% endif %}>
+                        {{ tipo.descripcion }}
+                    </option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="estado_registro">Estado Registro Persona:</label>
+            <select id="estado_registro" name="codigo_tabla_estado_registro" required>
+                <option value="" disabled {% if not codigo_tabla_estado_registro %}selected{% endif %}>Seleccione una opción</option>
+                {% for estado in estado_registro %}
+                    <option value="{{ estado.id_valor }}" {% if estado.id_valor == codigo_tabla_estado_registro %}selected{% endif %}>
+                        {{ estado.descripcion }}
+                    </option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="tipo_registro">Tipo Registro Persona:</label>
+            <select id="tipo_registro" name="codigo_tabla_tipo_registro" required>
+                <option value="" disabled {% if not codigo_tabla_tipo_registro %}selected{% endif %}>Seleccione una opción</option>
+                {% for tipo in tipo_registro %}
+                    <option value="{{ tipo.id_valor }}" {% if tipo.id_valor == codigo_tabla_tipo_registro %}selected{% endif %}>
+                        {{ tipo.descripcion }}
+                    </option>
+                {% endfor %}
+            </select><br><br>
+
+            <div class="panel">
+                <h3 class="panel-title">Registrar usuario</h3>
+                <div class="radio-group">
+                    <label class="radio-container">
+                        Si
+                        <input type="radio" name="radio-group" value="1" {% if radio_group == '1' %}checked{% endif %}>
+                        <span class="radiomark"></span>
+                    </label>
+                    <label class="radio-container">
+                        No
+                        <input type="radio" name="radio-group" value="2" {% if radio_group == '2' %}checked{% endif %}>
+                        <span class="radiomark"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div id="user-panel" style="display: none;">
+                <label for="operador">Nombre de Usuario:</label>
+                <input type="text" id="operador" name="operador" value="{{ operador or '' }}"><br><br>
+
+                <label for="contrasena">Contraseña:</label>
+                <input type="password" id="contrasena" name="contrasena"><br><br>
+            </div>
+
+            <button type="submit">Guardar</button>
+            <a href="{{ url_for('index_blueprint.menu') }}">Cancelar</a>
+        </form>
+    </body>
+</html>

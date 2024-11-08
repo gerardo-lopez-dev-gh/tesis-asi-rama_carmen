@@ -1,0 +1,115 @@
+/*----------------------------------------- General -----------------------------------------*/
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 0;
+    position: relative;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+button.home-icon {
+    font-size: 1.5rem;
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+button.home-icon:hover {
+    color: #777373;
+}
+
+/* Estilos de la Tabla */
+a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+table {
+    width: 100%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Estilos para mensajes */
+p {
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+/* Estilos para el select */
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #333;
+    font-size: 16px;
+    box-sizing: border-box; /* Asegura que el padding no afecte al ancho total */
+    appearance: none; /* Elimina el estilo predeterminado del navegador */
+    -webkit-appearance: none; /* Elimina el estilo predeterminado en navegadores webkit */
+    -moz-appearance: none; /* Elimina el estilo predeterminado en Firefox */
+}
+
+/* Añade un estilo para la flecha del select */
+select::-ms-expand {
+    display: none; /* Oculta la flecha predeterminada en IE y Edge */
+}
+
+/* Estilo para el contenedor del select para añadir un estilo de flecha personalizada */
+.select-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.select-container::after {
+    content: '\25BC'; /* Carácter de flecha hacia abajo */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color: #333;
+    pointer-events: none; /* Permite que el clic pase a través del contenedor */
+}

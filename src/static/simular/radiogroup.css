@@ -1,0 +1,60 @@
+/* Estilo base para el grupo de radio buttons */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilos para cada radio button */
+.radio-container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    user-select: none;
+}
+
+/* Ocultar el radio button real */
+.radio-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Crear un nuevo checkmark */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 50%;
+}
+
+/* Cambiar el color del checkmark cuando se selecciona */
+.radio-container input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+/* Crear el punto dentro del checkmark */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.radio-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Estilo del punto dentro del checkmark */
+.radio-container .checkmark:after {
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+}

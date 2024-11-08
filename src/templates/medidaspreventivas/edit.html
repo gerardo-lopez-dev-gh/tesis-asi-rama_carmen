@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Editar Medida Preventiva</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='global/edit.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    </head>
+
+    <body>
+        <header>
+            <h1>Editar Medida Preventiva</h1>
+            <button class="home-icon" onclick="window.location.href='{{ url_for('index_blueprint.menu') }}'">
+                <i class="fas fa-arrow-right"></i> Menu
+            </button>
+        </header>
+
+        <!-- Bloque para mostrar mensajes flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <script>
+                    {% for category, message in messages %}
+                        Swal.fire({
+                            icon: "{{ 'success' if category == 'success' else 'error' }}",
+                            title: "{{ message }}",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    {% endfor %}
+                </script>
+            {% endif %}
+        {% endwith %}
+
+        {% if not medidas %}
+            <form action="{{ url_for('medidasprev_blueprint.edit_medida_preventiva_form') }}" method="post">
+                <label for="id_med_prev">ID de la Medida Preventiva:</label>
+                <input type="number" id="id_med_prev" name="id_med_prev" required><br><br>
+                <button type="submit">Cargar Medida Preventiva</button>
+            </form>
+        {% else %}
+            <form action="{{ url_for('medidasprev_blueprint.update_medida_preventiva', id_med_prev=medidas.id_medida) }}" method="post">
+                <input type="hidden" name="id_med_prev" value="{{ medidas.id_medida }}">
+
+                <label for="id_animal">ID del Animal:</label>
+                <input type="number" id="id_animal" name="id_animal" value="{{ medidas.id_animal }}" required><br><br>
+
+                <label for="codigo_tabla_tipo_medida">Tipo de Medida Preventiva:</label>
+                <select id="codigo_tabla_tipo_medida" name="codigo_tabla_tipo_medida" required>
+                    <option value="" disabled selected>Seleccione una opción</option>
+                    {% for tipo in tipos_medida %}
+                        <option value="{{ tipo.id_valor }}" {% if tipo.id_valor == medidas.codigo_tabla_tipo_medida %} selected {% endif %}>
+                            {{ tipo.descripcion }}
+                        </option>
+                    {% endfor %}
+                </select><br><br>
+
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" required>{{ medidas.descripcion }}</textarea><br><br>
+
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" name="fecha" value="{{ medidas.fecha }}" required><br><br>
+
+                <button type="submit">Guardar Cambios</button>
+                <a href="{{ url_for('medidasprev_blueprint.list_medidas_preventivas') }}">Cancelar</a>
+            </form>
+        {% endif %}
+    </body>
+</html>

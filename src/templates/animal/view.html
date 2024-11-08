@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Detalles del Animal</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='global/view.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    </head>
+
+    <body>
+        <header>
+            <h1>Detalles del Animal</h1>
+            <button class="home-icon" onclick="window.location.href='{{ url_for('index_blueprint.menu') }}'">
+                <i class="fas fa-arrow-right"></i> Menu
+            </button>
+        </header>
+
+        <!-- Bloque para mostrar mensajes flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <script>
+                    {% for category, message in messages %}
+                        Swal.fire({
+                            icon: "{{ 'success' if category == 'success' else 'error' }}",
+                            title: "{{ message }}",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    {% endfor %}
+                </script>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Formulario de búsqueda -->
+        <div class="search-container">
+            <form action="{{ url_for('animal_blueprint.view_animal') }}" method="get">
+                <label for="filter_type">Buscar por:</label>
+                <div class="select-container">
+                    <select id="filter_type" name="filter_type">
+                        <option value="" disabled selected>Seleccione una opción</option>
+                        <option value="id">ID</option>
+                        <option value="nombre" disabled>Nombre</option>
+                        <option value="apellido" disabled>Apellido</option>
+                    </select>
+                </div>
+
+                <input type="text" id="filter_value" name="filter_value" placeholder="Valor de búsqueda" required>
+
+                <button type="submit">Buscar</button>
+            </form>
+        </div>
+
+        <!-- Mostrar múltiples registros -->
+        {% if animales %}
+            {% if animales|length > 1 %}
+                <h2>Información de los Animales</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tipo</th>
+                            <th>Fecha de Nacimiento</th>
+                            <th>Peso</th>
+                            <th>Estado de salud</th>
+                            <th>Estado del Registro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for animal in animales %}
+                            <tr>
+                                <td>{{ animal.id_animal }}</td>
+                                <td>{{ animal.tipo_animal }}</td>
+                                <td>{{ animal.fecha_nacimiento }}</td>
+                                <td>{{ animal.peso }}</td>
+                                <td>{{ animal.estado_salud }}</td>
+                                <td>{{ animal.estado_registro }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                {% set animal = animales[0] %}
+                <!-- Detalles del animal cuando hay un solo registro -->
+                <p><strong>ID:</strong> {{ animal.id_animal }}</p>
+                <p><strong>Tipo:</strong> {{ animal.tipo_animal }}</p>
+                <p><strong>Fecha de Nacimiento:</strong> {{ animal.fecha_nacimiento }}</p>
+                <p><strong>Peso:</strong> {{ animal.peso }} kg</p>
+                <p><strong>Estado de Salud:</strong> {{ animal.estado_salud }}</p>
+                <p><strong>Estado de Registro:</strong> {{ animal.estado_registro }}</p>
+            {% endif %}
+        {% elif request.args %}
+            <p>No se encontraron resultados para el filtro proporcionado.</p>
+        {% endif %}
+    </body>
+</html>

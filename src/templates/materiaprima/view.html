@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Detalles de Materia Prima</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='global/view.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    </head>
+
+    <body>
+        <header>
+            <h1>Ver Materia Prima</h1>
+            <button class="home-icon" onclick="window.location.href='{{ url_for('index_blueprint.menu') }}'">
+                <i class="fas fa-arrow-right"></i> Menu
+            </button>
+        </header>
+
+        <!-- Bloque para mostrar mensajes flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <script>
+                    {% for category, message in messages %}
+                        Swal.fire({
+                            icon: "{{ 'success' if category == 'success' else 'error' }}",
+                            title: "{{ message }}",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    {% endfor %}
+                </script>
+            {% endif %}
+        {% endwith %}
+
+        <div class="search-container">
+            <form action="{{ url_for('materiaprima_blueprint.view_materia_prima') }}" method="get">
+                <label for="filter_type">Buscar por:</label>
+                <div class="select-container">
+                    <select id="filter_type" name="filter_type">
+                        <option value="" disabled selected>Seleccione una opción</option>
+                        <option value="id">ID</option>
+                    </select>
+                </div>
+
+                <input type="text" id="filter_value" name="filter_value" placeholder="Valor de búsqueda" required>
+
+                <button type="submit">Buscar</button>
+            </form>
+        </div>
+
+        {% if materias %}
+            {% if materias|length > 1 %}
+                <h2>Información de las Materias Primas</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>ID del Animal</th>
+                            <th>Descripción</th>
+                            <th>Fecha de Obtención</th>
+                            <th>Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for materia in materias %}
+                            <tr>
+                                <td>{{ materia.id_prima }}</td>
+                                <td>{{ materia.id_animal }}</td>
+                                <td>{{ materia.descripcion }}</td>
+                                <td>{{ materia.fecha_obtencion }}</td>
+                                <td>{{ materia.cantidad }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                {% set materia = materias[0] %}
+
+                <p><strong>ID:</strong> {{ materia.id_prima }}</p>
+                <p><strong>ID del Animal:</strong> {{ materia.id_animal }}</p>
+                <p><strong>Descripción:</strong> {{ materia.descripcion }}</p>
+                <p><strong>Fecha de Obtención:</strong> {{ materia.fecha_obtencion }}</p>
+                <p><strong>Cantidad:</strong> {{ materia.cantidad }}</p>
+            {% endif %}
+        {% elif request.args %}
+            <p>No se encontraron resultados para el filtro proporcionado.</p>
+        {% endif %}
+    </body>
+</html>

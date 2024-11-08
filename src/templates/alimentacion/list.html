@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Lista de Alimentaciones</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='global/list.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    </head>
+
+    <body>
+        <header>
+            <h1>Lista de Alimentaciones</h1>
+            <button class="home-icon" onclick="window.location.href='{{ url_for('index_blueprint.menu') }}'">
+                <i class="fas fa-arrow-right"></i> Menu
+            </button>
+
+            <!-- Bloque para mostrar mensajes flash -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <script>
+                        {% for category, message in messages %}
+                            Swal.fire({
+                                icon: "{{ 'success' if category == 'success' else 'error' }}",
+                                title: "{{ message }}",
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                        {% endfor %}
+                    </script>
+                {% endif %}
+            {% endwith %}
+        </header>
+
+        {% if alimentaciones %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ID de Dieta</th>
+                        <th>Tipo de Alimento</th>
+                        <th>Cantidad</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for alimentacion in alimentaciones %}
+                        <tr>
+                            <!--<td><a href="{{ url_for('alimentacion_blueprint.view_alimentacion', id_alimentacion=alimentacion.id_alimentacion) }}">{{ alimentacion.id_alimentacion }}</a></td>-->
+                            <td>{{ alimentacion.id_alimentacion }}</td>
+                            <td>{{ alimentacion.id_dieta }}</td>
+                            <td>{{ alimentacion.tipo_alimento }}</td>
+                            <td>{{ alimentacion.cantidad }}</td>
+                            <td>{{ alimentacion.fecha }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No hay alimentaciones registradas.</p>
+        {% endif %}
+    </body>
+</html>

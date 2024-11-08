@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Editar Historial Médico</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='global/edit.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    </head>
+
+    <script>
+        function getInfo() {
+            const animalId = document.getElementById('id_animal').value;
+            if (animalId && animalId.trim() !== '') {
+                const url = `/historialmedico/get_animal_info/${animalId}`;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('animal-tipo').innerText = data.tipo_animal;
+                            document.getElementById('animal-fecha_nacimiento').innerText = data.fecha_nacimiento;
+                            document.getElementById('animal-estado_salud').innerText = data.estado_salud;
+                            document.getElementById('animal-peso').innerText = data.peso;
+                            document.getElementById('info-panel').style.display = 'block';
+                        } else {
+                            document.getElementById('info-panel').style.display = 'none';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching animal info:', error);
+                    });
+            } else {
+                document.getElementById('info-panel').style.display = 'none';
+            }
+        }
+    </script>
+
+    <body>
+        <header>
+            <h1>Editar Historial Médico</h1>
+            <button class="home-icon" onclick="window.location.href='{{ url_for('index_blueprint.menu') }}'">
+                <i class="fas fa-arrow-right"></i> Menu
+            </button>
+        </header>
+
+        <!-- Bloque para mostrar mensajes flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <script>
+                    {% for category, message in messages %}
+                        Swal.fire({
+                            icon: "{{ 'success' if category == 'success' else 'error' }}",
+                            title: "{{ message }}",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    {% endfor %}
+                </script>
+            {% endif %}
+        {% endwith %}
+
+        {% if not historiales %}
+            <form action="{{ url_for('historialmed_blueprint.edit_historial_form') }}" method="post">
+                <label for="id_historial">ID del Historial Médico:</label>
+                <input type="number" id="id_historial" name="id_historial" required><br><br>
+                <button type="submit">Cargar Historial Médico</button>
+            </form>
+        {% else %}
+            <form action="{{ url_for('historialmed_blueprint.update_historial', id_historial=historiales.id_historial) }}" method="post">
+                <input type="hidden" name="id_historial" value="{{ historiales.id_historial }}">
+
+                <label for="id_animal">ID del Animal:</label>
+                <input type="number" id="id_animal" name="id_animal" value="{{ historiales.id_animal }}" oninput="getInfo()" required><br><br>
+
+                <div id="info-panel" style="display: none;">
+                    <h3>Información del Animal</h3>
+                    <p><strong>Tipo de Animal:</strong> <span id="animal-tipo"></span></p>
+                    <p><strong>Fecha de Nacimiento:</strong> <span id="animal-fecha_nacimiento"></span></p>
+                    <p><strong>Estado de Salud:</strong> <span id="animal-estado_salud"></span></p>
+                    <p><strong>Peso:</strong> <span id="animal-peso"></span></p>
+                </div>
+
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" required>{{ historiales.descripcion }}</textarea><br><br>
+
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" name="fecha" value="{{ historiales.fecha }}" required><br><br>
+
+                <button type="submit">Guardar Cambios</button>
+                <a href="{{ url_for('historialmed_blueprint.list_historiales') }}">Cancelar</a>
+            </form>
+        {% endif %}
+    </body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registrar Venta</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='global/new.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    </head>
+
+    <script>
+        function getInfo() {
+            const clienteId = document.getElementById('id_persona').value;
+            if (clienteId && clienteId.trim() !== '') {
+                const url = `/ventas/get_cliente_info/${clienteId}`;
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error('Error en respuesta:', response.status, response.statusText);
+                            throw new Error('Error al obtener los datos del cliente');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('cliente-nombre').innerText = data.nombre;
+                            document.getElementById('cliente-direccion').innerText = data.direccion;
+                            document.getElementById('cliente-telefono').innerText = data.telefono;
+                            document.getElementById('cliente-correo_electronico').innerText = data.correo_electronico;
+                            document.getElementById('cliente-tipo_tabla_estado_civil').innerText = data.tipo_tabla_estado_civil;
+                            document.getElementById('cliente-codigo_tabla_estado_civil').innerText = data.codigo_tabla_estado_civil;
+                            document.getElementById('cliente-documento').innerText = data.documento;
+                            document.getElementById('cliente-tipo_tabla_tipo_documento').innerText = data.tipo_tabla_tipo_documento;
+                            document.getElementById('cliente-codigo_tabla_tipo_documento').innerText = data.codigo_tabla_tipo_documento;
+                            document.getElementById('cliente-tipo_tabla_estado_registro').innerText = data.tipo_tabla_estado_registro;
+                            document.getElementById('cliente-codigo_tabla_estado_registro').innerText = data.codigo_tabla_estado_registro;
+                            document.getElementById('cliente-tipo_tabla_tipo_registro').innerText = data.tipo_tabla_tipo_registro;
+                            document.getElementById('cliente-codigo_tabla_tipo_registro').innerText = data.codigo_tabla_tipo_registro;
+                            document.getElementById('cliente-estado_civil').innerText = data.estado_civil;
+                            document.getElementById('cliente-tipo_documento').innerText = data.tipo_documento;
+                            document.getElementById('cliente-estado_registro').innerText = data.estado_registro;
+                            document.getElementById('cliente-tipo_registro').innerText = data.tipo_registro;
+                            document.getElementById('info-panel').style.display = 'block';
+                        } else {
+                            document.getElementById('info-panel').style.display = 'none';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching cliente info:', error);
+                    });
+            } else {
+                document.getElementById('info-panel').style.display = 'none';
+            }
+        }
+    </script>
+
+    <body>
+        <header>
+            <h1>Registrar Nueva Venta</h1>
+            <button class="home-icon" onclick="window.location.href='{{ url_for('index_blueprint.menu') }}'">
+                <i class="fas fa-arrow-right"></i> Menu
+            </button>
+        </header>
+
+        <!-- Bloque para mostrar mensajes flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <script>
+                    {% for category, message in messages %}
+                        Swal.fire({
+                            icon: "{{ 'success' if category == 'success' else 'error' }}",
+                            title: "{{ message }}",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    {% endfor %}
+                </script>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Formulario para registrar nueva venta -->
+        <form action="{{ url_for('ventas_blueprint.new_venta_form') }}" method="post">
+            <label for="id_persona">ID del Cliente:</label>
+            <input type="number" id="id_persona" name="id_persona" oninput="getInfo()"><br><br>
+
+            <div id="info-panel" style="display: none;">
+                <h3>Información del Cliente</h3>
+                <p><strong>Nombre:</strong> <span id="cliente-nombre"></span></p>
+                <p><strong>Dirección:</strong> <span id="cliente-direccion"></span></p>
+                <p><strong>Teléfono:</strong> <span id="cliente-telefono"></span></p>
+                <p><strong>Correo Electrónico:</strong> <span id="cliente-correo_electronico"></span></p>
+            </div>
+
+            <label for="fecha_venta">Fecha de Venta:</label>
+            <input type="date" id="fecha_venta" name="fecha_venta" required><br><br>
+
+            <label for="moneda">Moneda:</label>
+            <input type="text" id="moneda" name="moneda" required><br><br>
+
+            <button type="submit">Registrar Venta</button>
+        </form>
+
+        <!-- Panel para agregar detalles de la venta solo si la venta ha sido registrada -->
+        {% if id_venta %}
+            <h2>Agregar Detalle de Venta</h2>
+            <form action="{{ url_for('ventas_blueprint.add_venta_detalle', id_venta=id_venta) }}" method="post">
+                <label for="id_producto_final">ID Producto Final:</label>
+                <input type="text" id="id_producto_final" name="id_producto_final" required><br><br>
+
+                <label for="cantidad">Cantidad Vendida:</label>
+                <input type="number" id="cantidad" name="cantidad" required><br><br>
+
+                <label for="precio_unitario">Precio Unitario:</label>
+                <input type="number" id="precio_unitario" name="precio_unitario" required><br><br>
+
+                <button type="submit">Agregar Detalle</button>
+            </form>
+        {% endif %}
+
+        <a href="{{ url_for('index_blueprint.menu') }}">Cancelar</a>
+    </body>
+</html>

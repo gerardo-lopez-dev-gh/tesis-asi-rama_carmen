@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Editar Persona</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='global/edit.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    </head>
+
+    <body>
+        <header>
+            <h1>Editar Persona</h1>
+            <button class="home-icon" onclick="window.location.href='{{ url_for('index_blueprint.menu') }}'">
+                <i class="fas fa-arrow-right"></i> Menu
+            </button>
+        </header>
+
+        <!-- Bloque para mostrar mensajes flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <script>
+                    {% for category, message in messages %}
+                        Swal.fire({
+                            icon: "{{ 'success' if category == 'success' else 'error' }}",
+                            title: "{{ message }}",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    {% endfor %}
+                </script>
+            {% endif %}
+        {% endwith %}
+
+        {% if not persona %}
+            <!-- Formulario para obtener el ID de la persona -->
+            <form action="{{ url_for('general_blueprint.edit_person_form') }}" method="post">
+                <label for="id_persona">ID de la Persona:</label>
+                <input type="number" id="id_persona" name="id_persona" required><br><br>
+                <button type="submit">Cargar Persona</button>
+            </form>
+        {% else %}
+            <!-- Formulario para editar la información de la persona cargada -->
+            <form action="{{ url_for('general_blueprint.update_person', id_persona=persona.id_persona) }}" method="post">
+                <input type="hidden" name="id_persona" value="{{ persona.id_persona }}">
+
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" value="{{ persona.nombre }}" required><br><br>
+
+                <label for="direccion">Dirección:</label>
+                <input type="text" id="direccion" name="direccion" value="{{ persona.direccion }}" required><br><br>
+
+                <label for="telefono">Teléfono:</label>
+                <input type="text" id="telefono" name="telefono" value="{{ persona.telefono }}" required><br><br>
+
+                <label for="correo_electronico">Correo Electrónico:</label>
+                <input type="email" id="correo_electronico" name="correo_electronico" value="{{ persona.correo_electronico }}" required><br><br>
+
+                <label for="estado_civil">Estado Civil:</label>
+                <select id="estado_civil" name="codigo_tabla_estado_civil" required>
+                    <option value="" disabled>Seleccione una opción</option>
+                    {% for estado in estado_civil %}
+                        <option value="{{ estado.id_valor }}" {% if estado.id_valor == persona.codigo_tabla_estado_civil %} selected {% endif %}>
+                            {{ estado.descripcion }}
+                        </option>
+                    {% endfor %}
+                </select><br><br>
+
+                <label for="documento">Documento:</label>
+                <input type="text" id="documento" name="documento" value="{{ persona.documento }}" required><br><br>
+
+                <label for="tipo_documento">Tipo de Documento:</label>
+                <select id="tipo_documento" name="codigo_tabla_tipo_documento" required>
+                    <option value="" disabled>Seleccione una opción</option>
+                    {% for tipo in tipo_documento %}
+                        <option value="{{ tipo.id_valor }}" {% if tipo.id_valor == persona.codigo_tabla_tipo_documento %} selected {% endif %}>
+                            {{ tipo.descripcion }}
+                        </option>
+                    {% endfor %}
+                </select><br><br>
+
+                <button type="submit">Guardar Cambios</button>
+                <a href="{{ url_for('index_blueprint.menu') }}">Cancelar</a>
+            </form>
+        {% endif %}
+    </body>
+</html>

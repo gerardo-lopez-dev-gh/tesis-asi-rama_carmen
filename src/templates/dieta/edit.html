@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Editar Dieta</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='global/edit.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    </head>
+
+    <body>
+        <header>
+            <h1>Editar Dieta</h1>
+            <button class="home-icon" onclick="window.location.href='{{ url_for('index_blueprint.menu') }}'">
+                <i class="fas fa-arrow-right"></i> Menu
+            </button>
+        </header>
+
+        <!-- Mensajes flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <script>
+                    {% for category, message in messages %}
+                        Swal.fire({
+                            icon: "{{ 'success' if category == 'success' else 'error' }}",
+                            title: "{{ message }}",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    {% endfor %}
+                </script>
+            {% endif %}
+        {% endwith %}
+
+        {% if not dieta %}
+            <!-- Formulario para obtener el ID de la dieta -->
+            <form action="{{ url_for('dieta_blueprint.edit_dieta_form') }}" method="post">
+                <label for="id_dieta">ID de la Dieta:</label>
+                <input type="number" id="id_dieta" name="id_dieta" required><br><br>
+                <button type="submit">Cargar Dieta</button>
+            </form>
+        {% else %}
+            <!-- Formulario para editar la dieta cargada -->
+            <form action="{{ url_for('dieta_blueprint.update_dieta', id_dieta=dieta.id_dieta) }}" method="post">
+                <input type="hidden" name="id_dieta" value="{{ dieta.id_dieta }}">
+
+                <label for="id_animal">ID del Animal:</label>
+                <input type="number" id="id_animal" name="id_animal" value="{{ dieta.id_animal }}" required><br><br>
+
+                <label for="tipo_dieta">Tipo de Dieta:</label>
+                <select id="tipo_dieta" name="codigo_tabla_tipo_dieta" required>
+                    <option value="" disabled selected>Seleccione una opción</option>
+                    {% for tipo in tipo_dieta %}
+                        <option value="{{ tipo.id_valor }}" {% if tipo.id_valor == dieta.codigo_tabla_tipo_dieta %} selected {% endif %}>
+                            {{ tipo.descripcion }}
+                        </option>
+                    {% endfor %}
+                </select><br><br>
+
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" required>{{ dieta.descripcion }}</textarea><br><br>
+
+                <label for="fecha_inicio">Fecha de Inicio:</label>
+                <input type="date" id="fecha_inicio" name="fecha_inicio" value="{{ dieta.fecha_inicio }}" required><br><br>
+
+                <label for="fecha_fin">Fecha de Fin:</label>
+                <input type="date" id="fecha_fin" name="fecha_fin" value="{{ dieta.fecha_fin }}" required><br><br>
+
+                <button type="submit">Guardar Cambios</button>
+                <a href="{{ url_for('index_blueprint.menu') }}">Cancelar</a>
+            </form>
+        {% endif %}
+    </body>
+</html>

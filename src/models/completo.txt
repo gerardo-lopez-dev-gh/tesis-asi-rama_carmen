@@ -1,0 +1,419 @@
+class Auditoria:
+    def __init__(self, id_autoria, parcial, nombre_tabla, tipo_operacion, id_registro, descripcion, fecha_operacion, usuario_operacion) -> None:
+        self.id_autoria = id_autoria
+        self.parcial = parcial
+        self.nombre_tabla = nombre_tabla
+        self.tipo_operacion = tipo_operacion
+        self.id_registro = id_registro
+        self.descripcion = descripcion
+        self.fecha_operacion = fecha_operacion
+        self.usuario_operacion = usuario_operacion
+
+    def to_json(self):
+        return {
+            'id_autoria': self.id_autoria,
+            'parcial': self.parcial,
+            'nombre_tabla': self.nombre_tabla,
+            'tipo_operacion': self.tipo_operacion,
+            'id_registro': self.id_registro,
+            'descripcion': self.descripcion,
+            'fecha_operacion': self.fecha_operacion,
+            'usuario_operacion': self.usuario_operacion
+        }
+
+class Permisos:
+    def __init__(self, id_permiso, nombre_permiso, descripcion) -> None:
+        self.id_permiso = id_permiso
+        self.nombre_permiso = nombre_permiso
+        self.descripcion = descripcion
+
+    def to_json(self):
+        return {
+            'id_permiso': self.id_permiso,
+            'nombre_permiso': self.nombre_permiso,
+            'descripcion': self.descripcion
+        }
+
+class Roles:
+    def __init__(self, id_rol, nombre_rol, descripcion) -> None:
+        self.id_rol = id_rol
+        self.nombre_rol = nombre_rol
+        self.descripcion = descripcion
+
+    def to_json(self):
+        return {
+            'id_rol': self.id_rol,
+            'nombre_rol': self.nombre_rol,
+            'descripcion': self.descripcion
+        }
+
+class RolesPermisos:
+    def __init__(self, id_rol_perm, id_rol, id_permiso) -> None:
+        self.id_rol_perm = id_rol_perm
+        self.id_rol = id_rol
+        self.id_permiso = id_permiso
+
+    def to_json(self):
+        return {
+            'id_rol_perm': self.id_rol_perm,
+            'id_rol': self.id_rol,
+            'id_permiso': self.id_permiso
+        }
+
+class General:
+    def __init__(self, id_persona, nombre, direccion, telefono, correo_electronico, estado_civil, cedula, tipo_documento) -> None:
+        self.id_persona = id_persona
+        self.nombre = nombre
+        self.direccion = direccion
+        self.telefono = telefono
+        self.correo_electronico = correo_electronico
+        self.estado_civil = estado_civil
+        self.cedula = cedula
+        self.tipo_documento = tipo_documento
+
+    def to_json(self):
+        return {
+            'id_persona': self.id_persona,
+            'nombre': self.nombre,
+            'direccion': self.direccion,
+            'telefono': self.telefono,
+            'correo_electronico': self.correo_electronico,
+            'estado_civil': self.estado_civil,
+            'cedula': self.cedula,
+            'tipo_documento': self.tipo_documento
+        }
+
+class Usuarios:
+    def __init__(self, id_usuario, id_persona, operador, contrasena, estado_registro, tipo_registro) -> None:
+        self.id_usuario = id_usuario
+        self.id_persona = id_persona
+        self.operador = operador
+        self.contrasena = contrasena
+        self.estado_registro = estado_registro
+        self.tipo_registro = tipo_registro
+
+    def to_json(self):
+        return {
+            'id_usuario': self.id_usuario,
+            'id_persona': self.id_persona,
+            'operador': self.operador,
+            'contrasena': self.contrasena,
+            'estado_registro': self.estado_registro,
+            'tipo_registro': self.tipo_registro
+        }
+
+class UsuariosRoles:
+    def __init__(self, id_usu_rol, id_rol, id_usuario) -> None:
+        self.id_usu_rol = id_usu_rol
+        self.id_rol = id_rol
+        self.id_usuario = id_usuario
+
+    def to_json(self):
+        return {
+            'id_usu_rol': self.id_usu_rol,
+            'id_rol': self.id_rol,
+            'id_usuario': self.id_usuario
+        }
+
+class Capacitacion:
+    def __init__(self, id_capacitacion, id_capacitor, descripcion, fecha_inicio, fecha_fin, resultado) -> None:
+        self.id_capacitacion = id_capacitacion
+        self.id_capacitor = id_capacitor
+        self.descripcion = descripcion
+        self.fecha_inicio = fecha_inicio
+        self.fecha_fin = fecha_fin
+        self.resultado = resultado
+
+    def to_json(self):
+        return {
+            'id_capacitacion': self.id_capacitacion,
+            'id_capacitor': self.id_capacitor,
+            'descripcion': self.descripcion,
+            'fecha_inicio': self.fecha_inicio,
+            'fecha_fin': self.fecha_fin,
+            'resultado': self.resultado
+        }
+
+class IndicadoresRendimiento:
+    def __init__(self, id_indicador, id_capacitacion, tipo_indicador, valor, fecha) -> None:
+        self.id_indicador = id_indicador
+        self.id_capacitacion = id_capacitacion
+        self.tipo_indicador = tipo_indicador
+        self.valor = valor
+        self.fecha = fecha
+
+    def to_json(self):
+        return {
+            'id_indicador': self.id_indicador,
+            'id_capacitacion': self.id_capacitacion,
+            'tipo_indicador': self.tipo_indicador,
+            'valor': self.valor,
+            'fecha': self.fecha
+        }
+
+class Empresa:
+    def __init__(self, id_empresa, id_propietario, nombre, direccion, telefono, correo_electronico, tipo_ganaderia, total_animales) -> None:
+        self.id_empresa = id_empresa
+        self.id_propietario = id_propietario
+        self.nombre = nombre
+        self.direccion = direccion
+        self.telefono = telefono
+        self.correo_electronico = correo_electronico
+        self.tipo_ganaderia = tipo_ganaderia
+        self.total_animales = total_animales
+
+    def to_json(self):
+        return {
+            'id_empresa': self.id_empresa,
+            'id_propietario': self.id_propietario,
+            'nombre': self.nombre,
+            'direccion': self.direccion,
+            'telefono': self.telefono,
+            'correo_electronico': self.correo_electronico,
+            'tipo_ganaderia': self.tipo_ganaderia,
+            'total_animales': self.total_animales
+        }
+
+class Contabilidad:
+    def __init__(self, id_contabilidad, id_empresa, tipo_transaccion, monto, fecha, descripcion) -> None:
+        self.id_contabilidad = id_contabilidad
+        self.id_empresa = id_empresa
+        self.tipo_transaccion = tipo_transaccion
+        self.monto = monto
+        self.fecha = fecha
+        self.descripcion = descripcion
+
+    def to_json(self):
+        return {
+            'id_contabilidad': self.id_contabilidad,
+            'id_empresa': self.id_empresa,
+            'tipo_transaccion': self.tipo_transaccion,
+            'monto': self.monto,
+            'fecha': self.fecha,
+            'descripcion': self.descripcion
+        }
+
+class Ventas:
+    def __init__(self, id_venta, id_cliente, fecha_venta, cantidad_vendida, precio_total, moneda) -> None:
+        self.id_venta = id_venta
+        self.id_cliente = id_cliente
+        self.fecha_venta = fecha_venta
+        self.cantidad_vendida = cantidad_vendida
+        self.precio_total = precio_total
+        self.moneda = moneda
+
+    def to_json(self):
+        return {
+            'id_venta': self.id_venta,
+            'id_cliente': self.id_cliente,
+            'fecha_venta': self.fecha_venta,
+            'cantidad_vendida': self.cantidad_vendida,
+            'precio_total': self.precio_total,
+            'moneda': self.moneda
+        }
+
+class ProductoFinal:
+    def __init__(self, id_producto_final, descripcion, fecha_produccion, cantidad_producida) -> None:
+        self.id_producto_final = id_producto_final
+        self.descripcion = descripcion
+        self.fecha_produccion = fecha_produccion
+        self.cantidad_producida = cantidad_producida
+
+    def to_json(self):
+        return {
+            'id_producto_final': self.id_producto_final,
+            'descripcion': self.descripcion,
+            'fecha_produccion': self.fecha_produccion,
+            'cantidad_producida': self.cantidad_producida
+        }
+
+class VentaDetalle:
+    def __init__(self, id_producto_final, id_venta, cantidad, precio_unitario) -> None:
+        self.id_producto_final = id_producto_final
+        self.id_venta = id_venta
+        self.cantidad = cantidad
+        self.precio_unitario = precio_unitario
+
+    def to_json(self):
+        return {
+            'id_producto_final': self.id_producto_final,
+            'id_venta': self.id_venta,
+            'cantidad': self.cantidad,
+            'precio_unitario': self.precio_unitario
+        }
+
+class Animal:
+    def __init__(self, id_animal, id_empresa, tipo, fecha_nacimiento, peso, estado_salud, estado_registro) -> None:
+        self.id_animal = id_animal
+        self.id_empresa = id_empresa
+        self.tipo = tipo
+        self.fecha_nacimiento = fecha_nacimiento
+        self.peso = peso
+        self.estado_salud = estado_salud
+        self.estado_registro = estado_registro
+
+    def to_json(self):
+        return {
+            'id_animal': self.id_animal,
+            'id_empresa': self.id_empresa,
+            'tipo': self.tipo,
+            'fecha_nacimiento': self.fecha_nacimiento,
+            'peso': self.peso,
+            'estado_salud': self.estado_salud,
+            'estado_registro': self.estado_registro
+        }
+
+class HistorialesMedicos:
+    def __init__(self, id_historial, id_animal, descripcion, fecha) -> None:
+        self.id_historial = id_historial
+        self.id_animal = id_animal
+        self.descripcion = descripcion
+        self.fecha = fecha
+
+    def to_json(self):
+        return {
+            'id_historial': self.id_historial,
+            'id_animal': self.id_animal,
+            'descripcion': self.descripcion,
+            'fecha': self.fecha
+        }
+
+class ResultadosExamenes:
+    def __init__(self, id_historial, id_animal, tipo_examen, resultado, fecha) -> None:
+        self.id_historial = id_historial
+        self.id_animal = id_animal
+        self.tipo_examen = tipo_examen
+        self.resultado = resultado
+        self.fecha = fecha
+
+    def to_json(self):
+        return {
+            'id_historial': self.id_historial,
+            'id_animal': self.id_animal,
+            'tipo_examen': self.tipo_examen,
+            'resultado': self.resultado,
+            'fecha': self.fecha
+        }
+
+class Dietas:
+    def __init__(self, id_dieta, id_animal, tipo_dieta, descripcion, fecha_inicio, fecha_fin) -> None:
+        self.id_dieta = id_dieta
+        self.id_animal = id_animal
+        self.tipo_dieta = tipo_dieta
+        self.descripcion = descripcion
+        self.fecha_inicio = fecha_inicio
+        self.fecha_fin = fecha_fin
+
+    def to_json(self):
+        return {
+            'id_dieta': self.id_dieta,
+            'id_animal': self.id_animal,
+            'tipo_dieta': self.tipo_dieta,
+            'descripcion': self.descripcion,
+            'fecha_inicio': self.fecha_inicio,
+            'fecha_fin': self.fecha_fin
+        }
+
+class Alimentacion:
+    def __init__(self, id_alimentacion, id_dieta, tipo_alimento, cantidad, fecha) -> None:
+        self.id_alimentacion = id_alimentacion
+        self.id_dieta = id_dieta
+        self.tipo_alimento = tipo_alimento
+        self.cantidad = cantidad
+        self.fecha = fecha
+
+    def to_json(self):
+        return {
+            'id_alimentacion': self.id_alimentacion,
+            'id_dieta': self.id_dieta,
+            'tipo_alimento': self.tipo_alimento,
+            'cantidad': self.cantidad,
+            'fecha': self.fecha
+        }
+
+class Tratamientos:
+    def __init__(self, id_tratamiento, id_animal, descripcion, fecha_inicio, fecha_fin, resultado) -> None:
+        self.id_tratamiento = id_tratamiento
+        self.id_animal = id_animal
+        self.descripcion = descripcion
+        self.fecha_inicio = fecha_inicio
+        self.fecha_fin = fecha_fin
+        self.resultado = resultado
+
+    def to_json(self):
+        return {
+            'id_tratamiento': self.id_tratamiento,
+            'id_animal': self.id_animal,
+            'descripcion': self.descripcion,
+            'fecha_inicio': self.fecha_inicio,
+            'fecha_fin': self.fecha_fin,
+            'resultado': self.resultado
+        }
+
+class TratamientosAplicados:
+    def __init__(self, id_tratamiento, id_animal, descripcion, fecha, resultado) -> None:
+        self.id_tratamiento = id_tratamiento
+        self.id_animal = id_animal
+        self.descripcion = descripcion
+        self.fecha = fecha
+        self.resultado = resultado
+
+    def to_json(self):
+        return {
+            'id_tratamiento': self.id_tratamiento,
+            'id_animal': self.id_animal,
+            'descripcion': self.descripcion,
+            'fecha': self.fecha,
+            'resultado': self.resultado
+        }
+
+class MedidasPreventivas:
+    def __init__(self, id_medida, id_animal, tipo_medida, descripcion, fecha) -> None:
+        self.id_medida = id_medida
+        self.id_animal = id_animal
+        self.tipo_medida = tipo_medida
+        self.descripcion = descripcion
+        self.fecha = fecha
+
+    def to_json(self):
+        return {
+            'id_medida': self.id_medida,
+            'id_animal': self.id_animal,
+            'tipo_medida': self.tipo_medida,
+            'descripcion': self.descripcion,
+            'fecha': self.fecha
+        }
+
+class MateriaPrima:
+    def __init__(self, id_prima, id_animal, descripcion, fecha_obtencion, cantidad) -> None:
+        self.id_prima = id_prima
+        self.id_animal = id_animal
+        self.descripcion = descripcion
+        self.fecha_obtencion = fecha_obtencion
+        self.cantidad = cantidad
+
+    def to_json(self):
+        return {
+            'id_prima': self.id_prima,
+            'id_animal': self.id_animal,
+            'descripcion': self.descripcion,
+            'fecha_obtencion': self.fecha_obtencion,
+            'cantidad': self.cantidad
+        }
+
+class Produccion:
+    def __init__(self, id_produccion, id_prima, id_producto_final, id_animal, cantidad_usada) -> None:
+        self.id_produccion = id_produccion
+        self.id_prima = id_prima
+        self.id_producto_final = id_producto_final
+        self.id_animal = id_animal
+        self.cantidad_usada = cantidad_usada
+
+    def to_json(self):
+        return {
+            'id_produccion': self.id_produccion,
+            'id_prima': self.id_prima,
+            'id_producto_final': self.id_producto_final,
+            'id_animal': self.id_animal,
+            'cantidad_usada': self.cantidad_usada
+        }
