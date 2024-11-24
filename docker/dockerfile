@@ -5,23 +5,21 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # Copia los archivos necesarios al contenedor
-COPY ../requirements.txt ./
+COPY requirements.txt ./
 COPY ../.env ./
 
-ENV FLASK_APP=main.py
+# Configura las variables de entorno necesarias para Flask
+ENV FLASK_APP=src
 ENV FLASK_ENV=development
-
 
 # Instala las dependencias de Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia el código de la aplicación al contenedor
+# Copia todo el código de la raíz del proyecto al contenedor
 COPY ../ .
 
 # Exponer el puerto que la aplicación usará
 EXPOSE 5000
 
 # Comando para ejecutar la aplicación
-CMD ["flask", "--app", "main.py", "run", "--host=0.0.0.0", "--port=5000"]
-
-
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
