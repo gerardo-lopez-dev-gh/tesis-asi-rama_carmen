@@ -8,6 +8,10 @@ WORKDIR /app
 COPY ../requirements.txt ./
 COPY ../.env ./
 
+ENV FLASK_APP=main.py
+ENV FLASK_ENV=development
+
+
 # Instala las dependencias de Python
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -18,5 +22,6 @@ COPY ../ .
 EXPOSE 5000
 
 # Comando para ejecutar la aplicación
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+CMD ["flask", "--app", "main.py", "run", "--host=0.0.0.0", "--port=5000"]
+
 
