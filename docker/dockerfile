@@ -16,7 +16,7 @@ RUN pip install pyinstaller
 COPY ../ .
 
 # Construir el binario con PyInstaller
-RUN pyinstaller --onefile index.py
+RUN pyinstaller --onefile ../index.py
 
 # Etapa 2: Imagen final para ejecución
 FROM alpine:latest
