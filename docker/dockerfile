@@ -5,16 +5,16 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # Copiar el archivo de dependencias desde la raíz del proyecto
-COPY tesis_asi_rama_carmen/requirements.txt .
+COPY requirements.txt .
 
 # Instalar las dependencias del proyecto
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar el archivo .env al contenedor
-COPY tesis_asi_rama_carmen/.env .
+COPY .env .
 
 # Copiar el resto del proyecto al contenedor
-COPY tesis_asi_rama_carmen .
+COPY ../. .
 
 # Exponer el puerto en el que corre tu aplicación
 EXPOSE 5000
