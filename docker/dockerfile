@@ -8,9 +8,6 @@ WORKDIR /app
 COPY requirements.txt ./
 COPY ../.env ./
 
-# Configura las variables de entorno necesarias para Flask
-ENV FLASK_APP=src
-ENV FLASK_ENV=development
 
 # Instala las dependencias de Python
 RUN pip install --no-cache-dir -r requirements.txt
