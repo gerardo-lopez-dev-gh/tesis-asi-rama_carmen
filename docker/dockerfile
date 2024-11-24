@@ -1,26 +1,34 @@
-# Usar una imagen base de Python
-FROM python:3.10-slim
+# Etapa 1: Construcción del binario
+FROM python:3.10-slim AS builder
 
-# Establecer el directorio de trabajo dentro del contenedor
+# Instalación de herramientas necesarias para construir el binario
+RUN apt-get update && apt-get install -y gcc libpq-dev && rm -rf /var/lib/apt/lists/*
+
+# Establecer el directorio de trabajo para la etapa de construcción
+WORKDIR /build
+
+# Copiar los archivos necesarios al contenedor
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install pyinstaller
+
+# Copiar el código fuente
+COPY . .
+
+# Construir el binario con PyInstaller
+RUN pyinstaller --onefile index.py
+
+# Etapa 2: Imagen final para ejecución
+FROM alpine:latest
+
+# Crear un directorio de trabajo
 WORKDIR /app
 
-# Copiar el archivo de dependencias desde la raíz del proyecto
-COPY requirements.txt .
+# Copiar el binario generado en la etapa de construcción
+COPY --from=builder /build/dist/index .
 
-# Instalar las dependencias del proyecto
-RUN pip install --no-cache-dir -r requirements.txt
+# Exponer el puerto en el que corre la aplicación
+EXPOSE 5000
 
-# Copiar el archivo .env al contenedor
-COPY .env .
-
-# Copiar el resto del proyecto al contenedor
-COPY ../. .
-
-# Exponer el puerto en el que corre tu aplicación
-EXPOSE 5050
-
-# Configurar el entorno para que reconozca las variables del archivo .env
-RUN pip install python-dotenv
-
-# Comando por defecto para ejecutar la aplicación
-CMD ["python", "index.py"]
+# Ejecutar el binario
+CMD ["./index"]
