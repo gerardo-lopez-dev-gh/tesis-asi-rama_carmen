@@ -11,13 +11,13 @@ WORKDIR /build
 RUN pwd
 
 # Copiar los archivos necesarios al contenedor
-COPY ../requirements.txt ./  
+COPY requirements.txt ./  
 RUN pwd && ls -la  # Mostrar contenido después de copiar requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install pyinstaller
 
 # Copiar el código fuente
-COPY ../ ./  
+COPY . .  
 
 # Mostrar el contenido del directorio después de copiar el código
 RUN pwd && ls -la
