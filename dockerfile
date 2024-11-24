@@ -36,7 +36,7 @@ WORKDIR /app
 RUN pwd
 
 # Copiar el binario generado en la etapa de construcción
-COPY --from=builder /build/dist/index .
+COPY --from=builder /build/dist/index /app/index  # Asegúrate de copiarlo en /app/index
 
 # Mostrar el contenido del directorio después de copiar el binario
 RUN pwd && ls -la
