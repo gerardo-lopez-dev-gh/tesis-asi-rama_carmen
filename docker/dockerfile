@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install pyinstaller
 
 # Copiar el código fuente
-COPY ../ .
+COPY . .
 
 # Mostrar el contenido del directorio después de copiar el código
 RUN cd ../ && pwd && ls -la 
