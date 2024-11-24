@@ -20,7 +20,7 @@ RUN pip install pyinstaller
 COPY ../ .
 
 # Mostrar el contenido del directorio después de copiar el código
-RUN ../pwd && ls -la ../
+RUN cd ../ && pwd && ls -la 
 
 # Construir el binario con PyInstaller
 RUN pyinstaller --onefile ../index.py
