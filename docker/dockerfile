@@ -12,7 +12,7 @@ COPY ../.env ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copia el código de la aplicación al contenedor
-COPY . .
+COPY ../ .
 
 # Exponer el puerto que la aplicación usará
 EXPOSE 5000
