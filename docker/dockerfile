@@ -17,7 +17,7 @@ COPY .env .
 COPY ../. .
 
 # Exponer el puerto en el que corre tu aplicación
-EXPOSE 5000
+EXPOSE 5050
 
 # Configurar el entorno para que reconozca las variables del archivo .env
 RUN pip install python-dotenv
